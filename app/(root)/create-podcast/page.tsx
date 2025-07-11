@@ -86,7 +86,7 @@ const CreatePodcast = () => {
         setIsSubmitting(false)
         throw new Error('Please generate audio and image')
       }
-      const podcast = await createPodcast({
+      await createPodcast({
         podcastTitle: data.podcastTitle,
         podcastDescription: data.podcastDescription,
         audioUrl,
