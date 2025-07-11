@@ -82,14 +82,14 @@ export interface LatestPodcastCardProps {
 }
 
 export interface PodcastDetailPlayerProps {
-  audioUrl: string
+  audioUrl?: string | null
   podcastTitle: string
   author: string
   isOwner: boolean
-  imageUrl: string
+  imageUrl?: string | null
   podcastId: Id<'podcasts'>
-  imageStorageId: Id<'_storage'>
-  audioStorageId: Id<'_storage'>
+  imageStorageId?: Id<'_storage'> | null
+  audioStorageId?: Id<'_storage'> | null
   authorImageUrl: string
   authorId: string
 }
