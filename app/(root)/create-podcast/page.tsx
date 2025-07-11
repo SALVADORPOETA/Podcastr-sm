@@ -78,20 +78,66 @@ const CreatePodcast = () => {
     }
   }
 
+  // async function onSubmit(data: z.infer<typeof formSchema>) {
+  //   try {
+  //     setIsSubmitting(true)
+  //     if (!audioUrl || !imageUrl || !voiceType) {
+  //       toast.error('Please generate audio and image')
+  //       setIsSubmitting(false)
+  //       throw new Error('Please generate audio and image')
+  //     }
+  //     await createPodcast({
+  //       podcastTitle: data.podcastTitle,
+  //       podcastDescription: data.podcastDescription,
+  //       audioUrl,
+  //       imageUrl,
+  //       voiceType,
+  //       imagePrompt,
+  //       voicePrompt,
+  //       views: 0,
+  //       audioDuration,
+  //       audioStorageId: audioStorageId!,
+  //       imageStorageId: imageStorageId!,
+  //     })
+  //     toast.success('Podcast created')
+  //     setIsSubmitting(false)
+  //     router.push('/')
+  //   } catch (error) {
+  //     console.log(error)
+  //     toast.error('Error')
+  //     setIsSubmitting(false)
+  //   }
+  // }
+
   async function onSubmit(data: z.infer<typeof formSchema>) {
     try {
       setIsSubmitting(true)
-      if (!audioUrl || !imageUrl || !voiceType) {
-        toast.error('Please generate audio and image')
-        setIsSubmitting(false)
-        throw new Error('Please generate audio and image')
-      }
+
+      // Esperar hasta 20 segundos máximo a que se generen audio e imagen
+      const timeout = 20000 // 20 segundos
+
+      const waitForAssets = new Promise<void>((resolve, reject) => {
+        const start = Date.now()
+
+        const checkInterval = setInterval(() => {
+          if (audioUrl && imageUrl && voiceType) {
+            clearInterval(checkInterval)
+            resolve()
+          } else if (Date.now() - start >= timeout) {
+            clearInterval(checkInterval)
+            reject(new Error('Please generate audio and image'))
+          }
+        }, 500) // chequea cada medio segundo
+      })
+
+      await waitForAssets
+
       await createPodcast({
         podcastTitle: data.podcastTitle,
         podcastDescription: data.podcastDescription,
         audioUrl,
         imageUrl,
-        voiceType,
+        voiceType: voiceType!,
         imagePrompt,
         voicePrompt,
         views: 0,
@@ -99,15 +145,19 @@ const CreatePodcast = () => {
         audioStorageId: audioStorageId!,
         imageStorageId: imageStorageId!,
       })
+
       toast.success('Podcast created')
-      setIsSubmitting(false)
       router.push('/')
     } catch (error) {
       console.log(error)
-      toast.error('Error')
+      toast.error(
+        error instanceof Error ? error.message : 'An unexpected error occurred'
+      )
+    } finally {
       setIsSubmitting(false)
     }
   }
+
   return (
     <section className="mt-10 flex flex-col">
       <h1 className="text-20 font-bold text-white-1">Create Podcast</h1>
