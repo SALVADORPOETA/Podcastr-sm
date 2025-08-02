@@ -1,4 +1,4 @@
-# Podcastr-sm
+# Podcastr
 
 This platform is a cutting-edge podcast service that eliminates the need for a real human voice by leveraging AI-powered features. It offers advanced functionalities such as text-to-multiple-voices conversion and AI-generated images to host and enhance podcasts. The application includes secure authentication, a modern homepage highlighting trending podcasts, and a sticky podcast player for continuous listening. Users can easily discover podcasts through a dedicated search page, create new podcasts with integrated text-to-audio conversion and image generation previews, and manage their content via a personalized profile page displaying all their created podcasts.
 
