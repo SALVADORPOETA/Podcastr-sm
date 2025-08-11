@@ -251,6 +251,64 @@ export const updatePodcastViews = mutation({
   },
 })
 
+// This mutation will update the podcast.
+export const updatePodcast = mutation({
+  args: {
+    podcastId: v.id('podcasts'),
+    updatedTitle: v.optional(v.string()),
+    updatedDescription: v.optional(v.string()),
+    updatedImageUrl: v.optional(v.string()),
+    updatedImagePrompt: v.optional(v.string()),
+    updatedImageStorageId: v.optional(v.id('_storage')),
+    updatedVoicePrompt: v.optional(v.string()),
+    updatedVoiceType: v.optional(v.string()),
+    updatedAudioUrl: v.optional(v.string()),
+    updatedAudioStorageId: v.optional(v.id('_storage')),
+    updatedAudioDuration: v.optional(v.number()),
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity()
+
+    if (!identity) {
+      throw new ConvexError('User not authenticated')
+    }
+
+    const podcast = await ctx.db.get(args.podcastId)
+
+    if (!podcast) {
+      throw new ConvexError('Podcast not found')
+    }
+
+    if (podcast.authorId !== identity.subject) {
+      throw new ConvexError('Only the author can update the podcast')
+    }
+
+    const updateData: Record<string, any> = {}
+    if (args.updatedTitle !== undefined)
+      updateData.podcastTitle = args.updatedTitle
+    if (args.updatedDescription !== undefined)
+      updateData.podcastDescription = args.updatedDescription
+    if (args.updatedImageUrl !== undefined)
+      updateData.imageUrl = args.updatedImageUrl
+    if (args.updatedImagePrompt !== undefined)
+      updateData.imagePrompt = args.updatedImagePrompt
+    if (args.updatedImageStorageId !== undefined)
+      updateData.imageStorageId = args.updatedImageStorageId
+    if (args.updatedVoicePrompt !== undefined)
+      updateData.voicePrompt = args.updatedVoicePrompt
+    if (args.updatedVoiceType !== undefined)
+      updateData.voiceType = args.updatedVoiceType
+    if (args.updatedAudioUrl !== undefined)
+      updateData.audioUrl = args.updatedAudioUrl
+    if (args.updatedAudioStorageId !== undefined)
+      updateData.audioStorageId = args.updatedAudioStorageId
+    if (args.updatedAudioDuration !== undefined)
+      updateData.audioDuration = args.updatedAudioDuration
+
+    return await ctx.db.patch(args.podcastId, updateData)
+  },
+})
+
 // this mutation will delete the podcast.
 export const deletePodcast = mutation({
   args: {

@@ -15,7 +15,7 @@ const PodcastPlayer = () => {
   const [duration, setDuration] = useState(0)
   const [isMuted, setIsMuted] = useState(false)
   const [currentTime, setCurrentTime] = useState(0)
-  const { audio } = useAudio()
+  const { audio, setAudio } = useAudio()
 
   const togglePlayPause = () => {
     if (audioRef.current?.paused) {
@@ -53,6 +53,21 @@ const PodcastPlayer = () => {
     }
   }
 
+  const closePlayer = () => {
+    if (audioRef.current) {
+      audioRef.current.pause()
+    }
+    setIsPlaying(false)
+    setIsMuted(false)
+    setAudio({
+      audioUrl: '',
+      title: '',
+      author: '',
+      imageUrl: '',
+      podcastId: '',
+    })
+  }
+
   useEffect(() => {
     const updateCurrentTime = () => {
       if (audioRef.current) {
@@ -68,7 +83,7 @@ const PodcastPlayer = () => {
         audioElement.removeEventListener('timeupdate', updateCurrentTime)
       }
     }
-  }, [])
+  }, [audio?.audioUrl])
 
   useEffect(() => {
     const audioElement = audioRef.current
@@ -81,6 +96,10 @@ const PodcastPlayer = () => {
     } else {
       audioElement?.pause()
       setIsPlaying(true)
+    }
+    if (audioRef.current && audioRef.current.muted) {
+      audioRef.current.muted = false
+      setIsMuted(false)
     }
   }, [audio])
   const handleLoadedMetadata = () => {
@@ -106,17 +125,19 @@ const PodcastPlayer = () => {
         className="w-full"
       />
       <section className="glassmorphism-black flex h-[112px] w-full items-center justify-between px-4 max-md:justify-center max-md:gap-5 md:px-12">
-        <audio
-          ref={audioRef}
-          src={audio?.audioUrl}
-          className="hidden"
-          onLoadedMetadata={handleLoadedMetadata}
-          onEnded={handleAudioEnded}
-        />
+        {audio?.audioUrl && (
+          <audio
+            ref={audioRef}
+            src={audio.audioUrl}
+            className="hidden"
+            onLoadedMetadata={handleLoadedMetadata}
+            onEnded={handleAudioEnded}
+          />
+        )}
         <div className="flex items-center gap-4 max-md:hidden">
           <Link href={`/podcast/${audio?.podcastId}`}>
             <Image
-              src={audio?.imageUrl ?? '/images/player1.png'}
+              src={audio?.imageUrl || '/images/player1.png'}
               width={64}
               height={64}
               alt="player1"
@@ -174,6 +195,14 @@ const PodcastPlayer = () => {
             />
           </div>
         </div>
+        <Image
+          src={'/icons/closeX.svg'}
+          width={30}
+          height={30}
+          alt="close player"
+          onClick={closePlayer}
+          className="cursor-pointer bg-gray-200 rounded-full p-1"
+        />
       </section>
     </div>
   )

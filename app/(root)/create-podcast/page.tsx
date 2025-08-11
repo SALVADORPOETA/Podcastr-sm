@@ -59,6 +59,7 @@ const CreatePodcast = () => {
   const [voiceType, setVoiceType] = useState<VoiceType | null>(null)
   const [voicePrompt, setVoicePrompt] = useState('')
 
+  const [isGenerating, setIsGenerating] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const createPodcast = useMutation(api.podcasts.createPodcast)
@@ -82,8 +83,8 @@ const CreatePodcast = () => {
     try {
       setIsSubmitting(true)
 
-      // Esperar hasta 20 segundos máximo a que se generen audio e imagen
-      const timeout = 20000 // 20 segundos
+      // Esperar hasta 15 segundos máximo a que se generen audio e imagen
+      const timeout = 15000 // 15 segundos
 
       const waitForAssets = new Promise<void>((resolve, reject) => {
         const start = Date.now()
@@ -146,7 +147,7 @@ const CreatePodcast = () => {
                   </FormLabel>
                   <FormControl>
                     <Input
-                      className="input-class focus-visible:ring-offset-orange-1"
+                      className="input-class focus-visible:ring-0 focus-visible:ring-offset-orange-1"
                       placeholder="Podcastr-sm"
                       {...field}
                     />
@@ -162,7 +163,7 @@ const CreatePodcast = () => {
               <Select onValueChange={handleVoiceChange}>
                 <SelectTrigger
                   className={cn(
-                    'text-16 w-full border-none bg-black-1 text-gray-1 focus-visible:ring-offset-orange-1'
+                    'text-16 w-full border border-gray-700 bg-black-1 text-gray-1 focus-visible:ring-0 focus-visible:ring-offset-orange-1'
                   )}
                 >
                   <SelectValue
@@ -170,12 +171,12 @@ const CreatePodcast = () => {
                     className="placeholder:text-gray-1"
                   />
                 </SelectTrigger>
-                <SelectContent className="text-16 border-none bg-black-1 font-bold text-white-1 focus-visible:ring-offset-orange-1">
+                <SelectContent className="text-16 border-none bg-black-1 font-bold text-white-1 focus-visible:ring-0 focus-visible:ring-offset-orange-1">
                   {voiceCategories.map((category) => (
                     <SelectItem
                       key={category}
                       value={category}
-                      className="capitalize focus:bg-orange-1"
+                      className="capitalize focus-visible:ring-0 focus:bg-orange-1"
                     >
                       {category}
                     </SelectItem>
@@ -200,7 +201,7 @@ const CreatePodcast = () => {
                   </FormLabel>
                   <FormControl>
                     <Textarea
-                      className="input-class focus-visible:ring-offset-orange-1"
+                      className="input-class focus-visible:ring-0 focus-visible:ring-offset-orange-1"
                       placeholder="Write a short podcast description"
                       {...field}
                     />
@@ -219,6 +220,8 @@ const CreatePodcast = () => {
               voicePrompt={voicePrompt}
               setVoicePrompt={setVoicePrompt}
               setAudioDuration={setAudioDuration}
+              isGenerating={isGenerating}
+              setIsGenerating={setIsGenerating}
             />
             <GenerateThumbnail
               setImage={setImageUrl}
@@ -226,11 +229,13 @@ const CreatePodcast = () => {
               image={imageUrl}
               imagePrompt={imagePrompt}
               setImagePrompt={setImagePrompt}
+              className=""
             />
             <div className="mt-10 w-full">
               <Button
                 type="submit"
                 className="text-16 w-full bg-orange-1 py-4 font-extrabold text-white-1 transition-all duration-500 hover:bg-black-1"
+                disabled={isSubmitting || isGenerating}
               >
                 {isSubmitting ? (
                   <>

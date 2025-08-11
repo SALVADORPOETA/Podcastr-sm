@@ -6,6 +6,8 @@ import { api } from '@/convex/_generated/api'
 
 const Home = () => {
   const trendingPodcasts = useQuery(api.podcasts.getTrendingPodcasts)
+  console.log('TrendingPodcasts:', trendingPodcasts)
+
   return (
     <div className="mt-9 flex flex-col gap-9">
       <section className="flex flex-col gap-5">

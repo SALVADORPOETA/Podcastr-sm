@@ -2,15 +2,25 @@
 import { useMutation } from 'convex/react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
-
+import { useEffect, useRef, useState } from 'react'
 import { api } from '@/convex/_generated/api'
 import { useAudio } from '@/providers/AudioProvider'
 import { PodcastDetailPlayerProps } from '@/types'
-
-import LoaderSpinner from './LoaderSpinner'
 import { Button } from './ui/button'
 import { toast } from 'sonner'
+import EditPodcastModal from './EditPodcastModal'
+
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog'
+import { Dialog, DialogTrigger } from './ui/dialog'
 
 const PodcastDetailPlayer = ({
   audioUrl,
@@ -23,12 +33,33 @@ const PodcastDetailPlayer = ({
   isOwner,
   authorImageUrl,
   authorId,
+  podcastDescription,
+  voicePrompt,
+  voiceType,
 }: PodcastDetailPlayerProps) => {
   const router = useRouter()
+  const updateViews = useMutation(api.podcasts.updatePodcastViews)
   const { setAudio } = useAudio()
-  //   const { toast } = useToast()
-  const [isDeleting, setIsDeleting] = useState(false)
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false)
   const deletePodcast = useMutation(api.podcasts.deletePodcast)
+  const menuRef = useRef<HTMLDivElement>(null)
+  const alertDialogRef = useRef<HTMLDivElement>(null)
+
+  const handlePlay = () => {
+    if (!audioUrl || !imageUrl) {
+      return null
+    }
+
+    setAudio({
+      title: podcastTitle,
+      audioUrl,
+      imageUrl,
+      author,
+      podcastId,
+    })
+    updateViews({ podcastId })
+  }
 
   const handleDelete = async () => {
     if (!podcastId || !imageStorageId || !audioStorageId) {
@@ -45,20 +76,25 @@ const PodcastDetailPlayer = ({
     }
   }
 
-  const handlePlay = () => {
-    if (!audioUrl || !imageUrl) {
-      return <LoaderSpinner />
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const isClickInsideMenu = menuRef.current?.contains(event.target as Node)
+      const isClickInsideAlertDialog = alertDialogRef.current?.contains(
+        event.target as Node
+      )
+      if (menuRef.current && !isClickInsideMenu && !isClickInsideAlertDialog) {
+        setIsMenuOpen(false)
+      }
     }
-    setAudio({
-      title: podcastTitle,
-      audioUrl,
-      imageUrl,
-      author,
-      podcastId,
-    })
-  }
+    if (isMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside)
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [isMenuOpen])
 
-  if (!imageUrl || !authorImageUrl) return <LoaderSpinner />
+  if (!imageUrl || !authorImageUrl) return null
 
   return (
     <div className="mt-6 flex w-full justify-between max-md:justify-center">
@@ -101,37 +137,98 @@ const PodcastDetailPlayer = ({
               width={20}
               height={20}
               alt="random play"
-            />{' '}
+            />
             &nbsp; Play podcast
           </Button>
         </div>
       </div>
       {isOwner && (
-        <div className="relative mt-2">
+        <div className="relative mt-2" ref={menuRef}>
           <Image
             src="/icons/three-dots.svg"
             width={20}
             height={30}
             alt="Three dots icon"
             className="cursor-pointer"
-            onClick={() => setIsDeleting((prev) => !prev)}
+            onClick={() => setIsMenuOpen((prev) => !prev)}
           />
-          {isDeleting && (
-            <div
-              className="absolute -left-32 -top-2 z-10 flex w-32 cursor-pointer justify-center gap-2 rounded-md bg-black-6 py-1.5 hover:bg-black-2"
-              onClick={handleDelete}
-            >
-              <Image
-                src="/icons/delete.svg"
-                width={16}
-                height={16}
-                alt="Delete icon"
-              />
-              <h2 className="text-16 font-normal text-white-1">Delete</h2>
+          {isMenuOpen && (
+            <div className="absolute -left-36 -top-2 z-10 flex w-32 flex-col rounded-md bg-black-6 py-1.5">
+              <Dialog>
+                <DialogTrigger asChild>
+                  <div
+                    className="flex cursor-pointer justify-start gap-2 py-1.5 hover:bg-black-2 pl-6"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      setIsEditModalOpen(true)
+                      setIsMenuOpen(false)
+                    }}
+                  >
+                    <Image
+                      src="/icons/edit.svg"
+                      width={16}
+                      height={16}
+                      alt="Edit icon"
+                    />
+                    <h2 className="text-16 font-normal text-white-1">Edit</h2>
+                  </div>
+                </DialogTrigger>
+              </Dialog>
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <div
+                    className="flex cursor-pointer justify-start gap-2 py-1.5 hover:bg-black-2 pl-6"
+                    onClick={(e) => e.stopPropagation()} // ¡Importante!
+                  >
+                    <Image
+                      src="/icons/delete.svg"
+                      width={16}
+                      height={16}
+                      alt="Delete icon"
+                    />
+                    <h2 className="text-16 font-normal text-white-1">Delete</h2>
+                  </div>
+                </AlertDialogTrigger>
+                <AlertDialogContent
+                  ref={alertDialogRef}
+                  className="bg-black-1 text-white-1 border-none"
+                >
+                  <AlertDialogHeader>
+                    <AlertDialogTitle className="text-white-1">
+                      Are you absolutely sure?
+                    </AlertDialogTitle>
+                    <AlertDialogDescription className="text-white-2">
+                      This action cannot be undone. This will permanently delete
+                      your podcast and remove its data from our servers.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <div className="flex justify-between">
+                    <AlertDialogCancel className="text-16 font-normal bg-black-3 text-white-2 border-none">
+                      Cancel
+                    </AlertDialogCancel>
+                    <AlertDialogAction
+                      onClick={handleDelete}
+                      className="text-16 font-normal bg-orange-1 text-white-1 border-none"
+                    >
+                      Delete
+                    </AlertDialogAction>
+                  </div>
+                </AlertDialogContent>
+              </AlertDialog>
             </div>
           )}
         </div>
       )}
+      <EditPodcastModal
+        podcastId={podcastId}
+        initialTitle={podcastTitle}
+        initialDescription={podcastDescription}
+        initialImageUrl={imageUrl}
+        initialAiPrompt={voicePrompt}
+        initialVoiceType={voiceType}
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
+      />
     </div>
   )
 }

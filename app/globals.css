@@ -14,7 +14,10 @@ html {
 
 @layer utilities {
   .input-class {
-    @apply text-16 placeholder:text-16 bg-black-1 rounded-[6px] placeholder:text-gray-1 border-none text-white-1;
+    @apply text-16 placeholder:text-16 bg-black-1 rounded-[6px] placeholder:text-gray-1 border border-gray-700 text-white-1 focus-visible:ring-0 focus-visible:ring-offset-orange-1;
+  }
+  .modal-input-class {
+    @apply bg-black-6 text-white-1 rounded-[6px] border border-gray-700 focus-visible:ring-0 focus-visible:ring-offset-orange-1;
   }
   .podcast_grid {
     @apply grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4;
@@ -26,7 +29,7 @@ html {
     @apply sticky left-0 top-0 flex w-fit flex-col  justify-between  border-none  bg-black-1 pt-8 text-white-1 max-md:hidden lg:w-[270px] lg:pl-8;
   }
   .generate_thumbnail {
-    @apply mt-[30px] flex w-full max-w-[520px] flex-col justify-between gap-2 rounded-lg border border-black-6 bg-black-1 px-2.5 py-2 md:flex-row md:gap-0;
+    @apply mt-[30px] flex w-full max-w-[520px] flex-col justify-between gap-2 rounded-lg border border-black-6 bg-black-1 px-2.5 py-2 md:flex-row;
   }
   .image_div {
     @apply flex-center mt-5 h-[142px] w-full cursor-pointer flex-col gap-3 rounded-xl border-[3.2px] border-dashed border-black-6 bg-black-1;

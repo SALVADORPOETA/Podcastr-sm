@@ -19,6 +19,7 @@ const GenerateThumbnail = ({
   image,
   imagePrompt,
   setImagePrompt,
+  className,
 }: GenerateThumbnailProps) => {
   const [isAiThumbnail, setIsAiThumbnail] = useState(false)
   const [isImageLoading, setIsImageLoading] = useState(false)
@@ -77,12 +78,12 @@ const GenerateThumbnail = ({
 
   return (
     <>
-      <div className="generate_thumbnail">
+      <div className="generate_thumbnail flex flex-col gap-4 sm:flex-row">
         <Button
           type="button"
           variant="plain"
           onClick={() => setIsAiThumbnail(true)}
-          className={cn('', { 'bg-black-6': isAiThumbnail })}
+          className={cn('flex-1 text-sm', { 'bg-black-6': isAiThumbnail })}
         >
           Use AI to generate thumbnail
         </Button>
@@ -90,7 +91,7 @@ const GenerateThumbnail = ({
           type="button"
           variant="plain"
           onClick={() => setIsAiThumbnail(false)}
-          className={cn('', { 'bg-black-6': !isAiThumbnail })}
+          className={cn('flex-1 text-sm', { 'bg-black-6': !isAiThumbnail })}
         >
           Upload custom image
         </Button>
@@ -102,7 +103,10 @@ const GenerateThumbnail = ({
               AI Prompt to generate Thumbnail
             </Label>
             <Textarea
-              className="input-class font-light focus-visible:ring-offset-orange-1"
+              className={cn(
+                'input-class font-light focus-visible:ring-0 focus-visible:ring-offset-orange-1',
+                className
+              )}
               placeholder="Provide text to generate thumbnail"
               rows={5}
               value={imagePrompt}
@@ -111,7 +115,7 @@ const GenerateThumbnail = ({
           </div>
           <div className="w-full max-w-[200px]">
             <Button
-              type="submit"
+              type="button"
               className="text-16 bg-orange-1 py-4 font-bold text-white-1"
               onClick={generateImage}
             >

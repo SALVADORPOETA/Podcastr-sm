@@ -1,11 +1,11 @@
 'use client'
 
 import EmptyState from '@/components/EmptyState'
-import LoaderSpinner from '@/components/LoaderSpinner'
 import PodcastCard from '@/components/PodcastCard'
 import PodcastDetailPlayer from '@/components/PodcastDetailPlayer'
 import { api } from '@/convex/_generated/api'
 import { Id } from '@/convex/_generated/dataModel'
+import { VoiceType } from '@/types'
 import { useUser } from '@clerk/nextjs'
 import { useQuery } from 'convex/react'
 import Image from 'next/image'
@@ -19,7 +19,7 @@ const PodcastDetailsClient = ({ podcastId }: { podcastId: Id<'podcasts'> }) => {
 
   const isOwner = user?.id === podcast?.authorId
 
-  if (!similarPodcasts || !podcast) return <LoaderSpinner />
+  if (!similarPodcasts || !podcast) return null
 
   return (
     <section className="flex w-full flex-col">
@@ -40,6 +40,7 @@ const PodcastDetailsClient = ({ podcastId }: { podcastId: Id<'podcasts'> }) => {
         isOwner={isOwner}
         podcastId={podcast._id}
         {...podcast}
+        voiceType={podcast.voiceType as VoiceType}
       />
       <p className="text-white-2 text-16 pb-8 pt-[45px] font-medium max-md:text-center">
         {podcast?.podcastDescription}
@@ -51,12 +52,14 @@ const PodcastDetailsClient = ({ podcastId }: { podcastId: Id<'podcasts'> }) => {
             {podcast?.voicePrompt}
           </p>
         </div>
-        <div className="flex flex-col gap-4">
-          <h1 className="text-18 font-bold text-white-1">Thumbnail Prompt</h1>
-          <p className="text-16 font-medium text-white-2">
-            {podcast?.imagePrompt}
-          </p>
-        </div>
+        {podcast?.imagePrompt && (
+          <div className="flex flex-col gap-4">
+            <h1 className="text-18 font-bold text-white-1">Thumbnail Prompt</h1>
+            <p className="text-16 font-medium text-white-2">
+              {podcast?.imagePrompt}
+            </p>
+          </div>
+        )}
       </div>
       <section className="mt-8 flex flex-col gap-5">
         <h1 className="text-20 font-bold text-white-1">Similar Podcasts</h1>

@@ -59,7 +59,10 @@ export interface GeneratePodcastProps {
   setAudioStorageId: Dispatch<SetStateAction<Id<'_storage'> | null>>
   voicePrompt: string
   setVoicePrompt: Dispatch<SetStateAction<string>>
+  showPrompt?: boolean
   setAudioDuration: Dispatch<SetStateAction<number>>
+  isGenerating: Boolean
+  setIsGenerating: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export interface GenerateThumbnailProps {
@@ -68,6 +71,7 @@ export interface GenerateThumbnailProps {
   image: string
   imagePrompt: string
   setImagePrompt: Dispatch<SetStateAction<string>>
+  className: string
 }
 
 export interface LatestPodcastCardProps {
@@ -92,6 +96,9 @@ export interface PodcastDetailPlayerProps {
   audioStorageId?: Id<'_storage'> | null
   authorImageUrl: string
   authorId: string
+  podcastDescription: string
+  voicePrompt: string
+  voiceType: VoiceType
 }
 
 export interface AudioProps {
