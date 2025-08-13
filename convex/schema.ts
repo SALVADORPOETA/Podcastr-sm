@@ -28,4 +28,16 @@ export default defineSchema({
     clerkId: v.string(),
     name: v.optional(v.string()),
   }),
+  episodes: defineTable({
+    podcastId: v.id('podcasts'),
+    episodeTitle: v.string(),
+    episodeDescription: v.string(),
+    audioUrl: v.string(),
+    audioStorageId: v.id('_storage'),
+    audioDuration: v.number(),
+    voiceType: v.string(),
+    voicePrompt: v.string(),
+    authorId: v.string(),
+    createdAt: v.number(),
+  }),
 })

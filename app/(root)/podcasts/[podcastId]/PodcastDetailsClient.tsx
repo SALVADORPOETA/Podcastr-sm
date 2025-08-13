@@ -3,12 +3,14 @@
 import EmptyState from '@/components/EmptyState'
 import PodcastCard from '@/components/PodcastCard'
 import PodcastDetailPlayer from '@/components/PodcastDetailPlayer'
+import { Button } from '@/components/ui/button'
 import { api } from '@/convex/_generated/api'
 import { Id } from '@/convex/_generated/dataModel'
 import { VoiceType } from '@/types'
 import { useUser } from '@clerk/nextjs'
 import { useQuery } from 'convex/react'
 import Image from 'next/image'
+import Link from 'next/link'
 
 const PodcastDetailsClient = ({ podcastId }: { podcastId: Id<'podcasts'> }) => {
   const { user } = useUser()
@@ -17,13 +19,16 @@ const PodcastDetailsClient = ({ podcastId }: { podcastId: Id<'podcasts'> }) => {
     podcastId,
   })
 
+  const episodes = useQuery(api.episodes.getEpisodesByPodcastId, {
+    podcastId,
+  })
+
   const isOwner = user?.id === podcast?.authorId
 
-  if (!similarPodcasts || !podcast) return null
+  if (!similarPodcasts || !podcast || !episodes) return null
 
   return (
     <section className="flex w-full flex-col">
-      {/* resto del JSX igual */}
       <header className="mt-9 flex items-center justify-between">
         <h1 className="text-20 font-bold text-white-1">Currently Playing</h1>
         <figure className="flex gap-3">
@@ -42,6 +47,47 @@ const PodcastDetailsClient = ({ podcastId }: { podcastId: Id<'podcasts'> }) => {
         {...podcast}
         voiceType={podcast.voiceType as VoiceType}
       />
+      <section className="mt-8 flex flex-col gap-5">
+        <h1 className="text-20 font-bold text-white-1">Episodes</h1>
+        {isOwner && (
+          <Link href={`/create-episode?podcastId=${podcastId}`}>
+            <Button className="bg-orange-1 text-white-1">
+              + Add New Episode
+            </Button>
+          </Link>
+        )}
+        {episodes.length > 0 ? (
+          <div className="flex flex-col gap-3">
+            {episodes.map((episode, index) => (
+              <Link key={episode._id} href={`/episodes/${episode._id}`}>
+                <div className="bg-black-3 rounded-xl p-4 flex items-center justify-between cursor-pointer transition-colors hover:bg-black-2">
+                  <div className="flex gap-3 items-center">
+                    <span className="text-18 font-bold text-white-1">
+                      {index + 1}.
+                    </span>
+                    <p className="text-16 text-white-1">
+                      {episode.episodeTitle}
+                    </p>
+                  </div>
+                  <Image
+                    src="/icons/play.svg"
+                    width={24}
+                    height={24}
+                    alt="play"
+                    className="invert-white"
+                  />
+                </div>
+              </Link>
+            ))}
+          </div>
+        ) : (
+          <EmptyState
+            title="No episodes found"
+            buttonLink="/discover"
+            buttonText="Discover more podcasts"
+          />
+        )}
+      </section>
       <p className="text-white-2 text-16 pb-8 pt-[45px] font-medium max-md:text-center">
         {podcast?.podcastDescription}
       </p>
