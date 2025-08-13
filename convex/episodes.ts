@@ -1,6 +1,5 @@
 import { v } from 'convex/values'
 import { mutation, action, query } from './_generated/server'
-import { Id } from './_generated/dataModel'
 
 // Mutación para generar una URL para subir archivos.
 export const generateUploadUrl = mutation({
