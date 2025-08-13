@@ -70,7 +70,7 @@ const PodcastDetailsClient = ({ podcastId }: { podcastId: Id<'podcasts'> }) => {
                     </p>
                   </div>
                   <Image
-                    src="/icons/play.svg"
+                    src="/icons/Play.svg"
                     width={24}
                     height={24}
                     alt="play"
