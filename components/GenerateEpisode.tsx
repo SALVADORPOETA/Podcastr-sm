@@ -26,7 +26,7 @@ const useGenerateEpisode = ({
   const getAudioUrl = useAction(api.episodes.getUrl)
 
   // ✅ CORRECTED: Get user info and isLoaded state from Clerk
-  const { user, isLoaded } = useUser()
+  const { user } = useUser()
   const userId = user?.id || null
 
   const generateEpisode = async () => {

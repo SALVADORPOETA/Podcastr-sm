@@ -24,7 +24,6 @@ const EpisodeDetailPlayer = ({
   podcastTitle,
   audioUrl,
   imageUrl,
-  author,
   audioDuration,
 }: EpisodeDetailPlayerProps) => {
   const [isPlaying, setIsPlaying] = useState(false)
