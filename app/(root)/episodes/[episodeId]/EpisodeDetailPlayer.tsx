@@ -26,7 +26,7 @@ const EpisodeDetailPlayer = ({
   imageUrl,
   audioDuration,
 }: EpisodeDetailPlayerProps) => {
-  const [isPlaying, setIsPlaying] = useState(false)
+  const [_, setIsPlaying] = useState(false)
   const { setAudio } = useAudio()
 
   const formatDuration = (seconds: number) => {
