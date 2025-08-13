@@ -22,7 +22,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { cn } from '@/lib/utils'
-import { useState } from 'react'
+import { Suspense, useState } from 'react'
 import { Textarea } from '@/components/ui/textarea'
 import GenerateEpisode from '@/components/GenerateEpisode'
 import { Loader } from 'lucide-react'
@@ -34,6 +34,7 @@ import { api } from '@/convex/_generated/api'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { SetStateAction } from 'react'
 import { useUser } from '@clerk/nextjs'
+import LoaderSpinner from '@/components/LoaderSpinner'
 
 const voiceCategories = ['alloy', 'shimmer', 'nova', 'echo', 'fable', 'onyx']
 
@@ -133,164 +134,172 @@ const CreateEpisode = () => {
   }
 
   return (
-    <section className="mt-10 flex flex-col">
-      <h1 className="text-20 font-bold text-white-1">Create New Episode</h1>
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="mt-12 flex w-full flex-col"
-        >
-          <div className="flex flex-col gap-[30px] border-b border-black-5 pb-10">
-            <FormField
-              control={form.control}
-              name="episodeTitle"
-              render={({ field }) => (
-                <FormItem className="flex flex-col gap-2.5">
-                  <FormLabel className="text-16 font-bold text-white-1">
-                    Episode Title
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      className="input-class focus-visible:ring-0 focus-visible:ring-offset-orange-1"
-                      placeholder="Episode 1: The Beginning"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage className="text-white-1" />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="voiceType"
-              render={({ field }) => (
-                <FormItem className="flex flex-col gap-2.5">
-                  <FormLabel className="text-16 font-bold text-white-1">
-                    Select AI Voice
-                  </FormLabel>
-                  <FormControl>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <SelectTrigger
-                        className={cn(
-                          'text-16 w-full border border-gray-700 bg-black-1 text-gray-1 focus-visible:ring-0 focus-visible:ring-offset-orange-1'
-                        )}
-                      >
-                        <SelectValue
-                          placeholder="Select AI Voice"
-                          className="placeholder:text-gray-1"
-                        />
-                      </SelectTrigger>
-                      <SelectContent className="text-16 border-none bg-black-1 font-bold text-white-1 focus-visible:ring-0 focus-visible:ring-offset-orange-1">
-                        {voiceCategories.map((category) => (
-                          <SelectItem
-                            key={category}
-                            value={category}
-                            className="capitalize focus-visible:ring-0 focus:bg-orange-1"
-                          >
-                            {category}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
-                  <FormMessage className="text-white-1" />
-                  {voiceType && (
-                    <audio
-                      src={`/${voiceType}.mp3`}
-                      autoPlay
-                      className="hidden"
-                    />
-                  )}
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="episodeDescription"
-              render={({ field }) => (
-                <FormItem className="flex flex-col gap-2.5">
-                  <FormLabel className="text-16 font-bold text-white-1">
-                    Episode Description
-                  </FormLabel>
-                  <FormControl>
-                    <Textarea
-                      className="input-class focus-visible:ring-0 focus-visible:ring-offset-orange-1"
-                      placeholder="Write a short episode description"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage className="text-white-1" />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="voicePrompt"
-              render={({ field }) => (
-                <FormItem className="flex flex-col gap-2.5">
-                  <FormLabel className="text-16 font-bold text-white-1">
-                    AI Prompt to generate Podcast
-                  </FormLabel>
-                  <FormControl>
-                    <Textarea
-                      className="input-class font-light focus-visible:ring-offset-orange-1"
-                      placeholder="Provide text to generate audio"
-                      rows={5}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage className="text-white-1" />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className="flex flex-col pt-10">
-            <GenerateEpisode
-              setAudioStorageId={setAudioStorageId}
-              setAudio={setAudioUrl}
-              voiceType={voiceType as VoiceType}
-              audio={audioUrl}
-              voicePrompt={voicePrompt}
-              setVoicePrompt={(action: SetStateAction<string>) => {
-                if (typeof action === 'function') {
-                  form.setValue(
-                    'voicePrompt',
-                    action(form.getValues('voicePrompt'))
-                  )
-                } else {
-                  form.setValue('voicePrompt', action)
-                }
-              }}
-              setAudioDuration={setAudioDuration}
-              isGenerating={isGenerating}
-              setIsGenerating={setIsGenerating}
-            />
-            <div className="mt-10 w-full">
-              <Button
-                type="submit"
-                className="text-16 w-full bg-orange-1 py-4 font-extrabold text-white-1 transition-all duration-500 hover:bg-black-1"
-                disabled={isSubmitting || isGenerating || !isLoaded}
-              >
-                {isSubmitting ? (
-                  <>
-                    Submitting
-                    <Loader size={20} className="animate-spin ml-2" />
-                  </>
-                ) : (
-                  'Submit & Publish Episode'
+    <Suspense
+      fallback={
+        <div>
+          <LoaderSpinner />
+        </div>
+      }
+    >
+      <section className="mt-10 flex flex-col">
+        <h1 className="text-20 font-bold text-white-1">Create New Episode</h1>
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="mt-12 flex w-full flex-col"
+          >
+            <div className="flex flex-col gap-[30px] border-b border-black-5 pb-10">
+              <FormField
+                control={form.control}
+                name="episodeTitle"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col gap-2.5">
+                    <FormLabel className="text-16 font-bold text-white-1">
+                      Episode Title
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        className="input-class focus-visible:ring-0 focus-visible:ring-offset-orange-1"
+                        placeholder="Episode 1: The Beginning"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage className="text-white-1" />
+                  </FormItem>
                 )}
-              </Button>
+              />
+
+              <FormField
+                control={form.control}
+                name="voiceType"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col gap-2.5">
+                    <FormLabel className="text-16 font-bold text-white-1">
+                      Select AI Voice
+                    </FormLabel>
+                    <FormControl>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <SelectTrigger
+                          className={cn(
+                            'text-16 w-full border border-gray-700 bg-black-1 text-gray-1 focus-visible:ring-0 focus-visible:ring-offset-orange-1'
+                          )}
+                        >
+                          <SelectValue
+                            placeholder="Select AI Voice"
+                            className="placeholder:text-gray-1"
+                          />
+                        </SelectTrigger>
+                        <SelectContent className="text-16 border-none bg-black-1 font-bold text-white-1 focus-visible:ring-0 focus-visible:ring-offset-orange-1">
+                          {voiceCategories.map((category) => (
+                            <SelectItem
+                              key={category}
+                              value={category}
+                              className="capitalize focus-visible:ring-0 focus:bg-orange-1"
+                            >
+                              {category}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                    <FormMessage className="text-white-1" />
+                    {voiceType && (
+                      <audio
+                        src={`/${voiceType}.mp3`}
+                        autoPlay
+                        className="hidden"
+                      />
+                    )}
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="episodeDescription"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col gap-2.5">
+                    <FormLabel className="text-16 font-bold text-white-1">
+                      Episode Description
+                    </FormLabel>
+                    <FormControl>
+                      <Textarea
+                        className="input-class focus-visible:ring-0 focus-visible:ring-offset-orange-1"
+                        placeholder="Write a short episode description"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage className="text-white-1" />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="voicePrompt"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col gap-2.5">
+                    <FormLabel className="text-16 font-bold text-white-1">
+                      AI Prompt to generate Podcast
+                    </FormLabel>
+                    <FormControl>
+                      <Textarea
+                        className="input-class font-light focus-visible:ring-offset-orange-1"
+                        placeholder="Provide text to generate audio"
+                        rows={5}
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage className="text-white-1" />
+                  </FormItem>
+                )}
+              />
             </div>
-          </div>
-        </form>
-      </Form>
-    </section>
+            <div className="flex flex-col pt-10">
+              <GenerateEpisode
+                setAudioStorageId={setAudioStorageId}
+                setAudio={setAudioUrl}
+                voiceType={voiceType as VoiceType}
+                audio={audioUrl}
+                voicePrompt={voicePrompt}
+                setVoicePrompt={(action: SetStateAction<string>) => {
+                  if (typeof action === 'function') {
+                    form.setValue(
+                      'voicePrompt',
+                      action(form.getValues('voicePrompt'))
+                    )
+                  } else {
+                    form.setValue('voicePrompt', action)
+                  }
+                }}
+                setAudioDuration={setAudioDuration}
+                isGenerating={isGenerating}
+                setIsGenerating={setIsGenerating}
+              />
+              <div className="mt-10 w-full">
+                <Button
+                  type="submit"
+                  className="text-16 w-full bg-orange-1 py-4 font-extrabold text-white-1 transition-all duration-500 hover:bg-black-1"
+                  disabled={isSubmitting || isGenerating || !isLoaded}
+                >
+                  {isSubmitting ? (
+                    <>
+                      Submitting
+                      <Loader size={20} className="animate-spin ml-2" />
+                    </>
+                  ) : (
+                    'Submit & Publish Episode'
+                  )}
+                </Button>
+              </div>
+            </div>
+          </form>
+        </Form>
+      </section>
+    </Suspense>
   )
 }
 
