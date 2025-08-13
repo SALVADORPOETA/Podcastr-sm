@@ -26,7 +26,7 @@ const EpisodeDetailPlayer = ({
   imageUrl,
   audioDuration,
 }: EpisodeDetailPlayerProps) => {
-  const [_, setIsPlaying] = useState(false)
+  // const [isPlaying, setIsPlaying] = useState(false)
   const { setAudio } = useAudio()
 
   const formatDuration = (seconds: number) => {
@@ -40,7 +40,7 @@ const EpisodeDetailPlayer = ({
   }
 
   const handlePlay = () => {
-    setIsPlaying(true)
+    // setIsPlaying(true)
     setAudio({
       title: episodeTitle,
       author: podcastTitle,
