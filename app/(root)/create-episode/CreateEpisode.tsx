@@ -76,10 +76,8 @@ const CreateEpisode = () => {
   const voicePrompt = form.watch('voicePrompt')
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
-    // --- ESTE ES EL NUEVO CÓDIGO DE DEPURACIÓN ---
     console.log('isLoaded:', isLoaded)
     console.log('user:', user)
-    // ----------------------------------------------
     try {
       if (!isLoaded || !user) {
         toast.error('You must be logged in to create an episode.')
@@ -108,8 +106,8 @@ const CreateEpisode = () => {
       })
       await waitForAudio
 
-      await createEpisode({
-        podcastId: podcastId,
+      const episode = await createEpisode({
+        podcastId,
         episodeTitle: data.episodeTitle,
         episodeDescription: data.episodeDescription,
         audioUrl,
@@ -118,9 +116,12 @@ const CreateEpisode = () => {
         voiceType: data.voiceType as VoiceType,
         voicePrompt: data.voicePrompt,
       })
+      if (!episode) {
+        throw new Error('Failed to create episode')
+      }
 
       toast.success('Episode created successfully')
-      router.push(`/podcasts/${podcastId}`)
+      router.push(`/episodes/${episode._id}`)
     } catch (error) {
       console.log(error)
       toast.error(
@@ -238,7 +239,7 @@ const CreateEpisode = () => {
                   </FormLabel>
                   <FormControl>
                     <Textarea
-                      className="input-class font-light focus-visible:ring-offset-orange-1"
+                      className="input-class font-light focus-visible:ring-0 focus-visible:ring-offset-orange-1"
                       placeholder="Provide text to generate audio"
                       rows={5}
                       {...field}

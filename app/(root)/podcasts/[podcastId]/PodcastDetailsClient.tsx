@@ -60,7 +60,7 @@ const PodcastDetailsClient = ({ podcastId }: { podcastId: Id<'podcasts'> }) => {
           <div className="flex flex-col gap-3">
             {episodes.map((episode, index) => (
               <Link key={episode._id} href={`/episodes/${episode._id}`}>
-                <div className="bg-black-3 rounded-xl p-4 flex items-center justify-between cursor-pointer transition-colors hover:bg-black-2">
+                <div className="bg-black-2 rounded-xl p-4 flex items-center justify-between cursor-pointer transition-colors hover:bg-orange-1">
                   <div className="flex gap-3 items-center">
                     <span className="text-18 font-bold text-white-1">
                       {index + 1}.

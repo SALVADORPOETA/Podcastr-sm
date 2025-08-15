@@ -39,5 +39,6 @@ export default defineSchema({
     voicePrompt: v.string(),
     authorId: v.string(),
     createdAt: v.number(),
+    views: v.number(),
   }),
 })

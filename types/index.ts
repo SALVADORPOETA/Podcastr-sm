@@ -61,7 +61,7 @@ export interface GeneratePodcastProps {
   setVoicePrompt: Dispatch<SetStateAction<string>>
   showPrompt?: boolean
   setAudioDuration: Dispatch<SetStateAction<number>>
-  isGenerating: Boolean
+  isGenerating: boolean
   setIsGenerating: React.Dispatch<React.SetStateAction<boolean>>
 }
 
@@ -101,12 +101,33 @@ export interface PodcastDetailPlayerProps {
   voiceType: VoiceType
 }
 
-export interface AudioProps {
-  title: string
-  audioUrl: string
+export interface EpisodeDetailPlayerProps {
+  podcastId: Id<'podcasts'>
+  podcastTitle: string
+  podcastDescription: string
+  authorId: string
   author: string
-  imageUrl: string
+  authorImageUrl: string
+  isOwner: boolean
+  episodeId: Id<'episodes'>
+  episodeTitle: string
+  episodeDescription: string
+  voiceType: VoiceType
+  voicePrompt: string
+  audioStorageId?: Id<'_storage'> | null
+  audioUrl?: string | null
+  audioDuration: number
+  imageStorageId?: Id<'_storage'> | null
+  imageUrl?: string | null
+}
+
+export interface AudioProps {
   podcastId: string
+  episodeId: string
+  title: string
+  author: string
+  audioUrl: string
+  imageUrl: string
 }
 
 export interface AudioContextType {
