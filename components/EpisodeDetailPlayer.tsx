@@ -86,10 +86,6 @@ const EpisodeDetailPlayer = ({
               className="rounded-full"
             />
             <h2 className="text-16 font-normal text-white-2 px-1">{author}</h2>
-            {/* <Image src="/icons/watch.svg" width={24} height={24} alt="watch" />
-            <h2 className="text-16 font-bold text-white-1 px-1">
-              {formatDuration(audioDuration)}
-            </h2> */}
           </Link>
           {audioUrl && (
             <a
