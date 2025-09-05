@@ -313,6 +313,7 @@ const EditPodcastModal = ({
               }}
               isGenerating={isGenerating}
               setIsGenerating={setIsGenerating}
+              showPrompt={false}
             />
             {audioUrl && (
               <audio controls src={audioUrl} autoPlay className="mt-5 w-full" />

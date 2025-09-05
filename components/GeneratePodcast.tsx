@@ -70,7 +70,7 @@ const useGeneratePodcast = ({
 }
 
 const GeneratePodcast = ({
-  showPrompt = false,
+  showPrompt = true,
   ...props
 }: GeneratePodcastProps) => {
   const { isGenerating, generatePodcast } = useGeneratePodcast(props)
