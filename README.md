@@ -110,11 +110,10 @@ npm run dev
 podcastr-sm/
 ├─ app/                 # Next.js app routes and pages
 ├─ components/          # Reusable UI components (Navbar, Player, Modals)
-├─ context/             # React contexts (AudioProvider)
 ├─ convex/              # Convex backend: schema, queries, mutations
 ├─ lib/                 # Utilities: debounce, formatTime, className helpers
 ├─ public/              # Static assets: images, icons
-├─ styles/              # Global TailwindCSS styles
+├─ ...             
 ├─ package.json
 └─ tsconfig.json
 ```
