@@ -121,7 +121,7 @@ podcastr-sm/
 
 ---
 
-## 🔧 Key Contributions & Improvements
+## 🔧 My Personal Contributions & Improvements
 
 1. Manual player close function with proper state reset
 2. Enhanced player UI with current/total time display
