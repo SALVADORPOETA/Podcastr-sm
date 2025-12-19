@@ -150,5 +150,3 @@ podcastr-sm/
 ## ⚖️ License
 
 This is a personal portfolio project by **Salvador Martínez**. No commercial use intended.
-
----
