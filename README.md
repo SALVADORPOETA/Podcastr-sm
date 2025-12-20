@@ -1,6 +1,6 @@
 # Podcastr
 
-## 🚀 Introduction
+🚀 Introduction
 
 Podcastr-sm is a **cutting-edge podcast platform** that eliminates the need for a real human voice by leveraging AI-powered features. The project was initially based on a **JavaScript Mastery YouTube tutorial**, but I **significantly expanded and customized it** to create a fully functional and professional application.
 
