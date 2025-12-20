@@ -149,4 +149,4 @@ podcastr-sm/
 
 ## ⚖️ License
 
-This is a personal portfolio project by **Salvador Martínez**. No commercial use intended.
+This is a personal portfolio project by Salvador Martinez based on a JavaScript Mastery tutorial. No commercial use intended.
