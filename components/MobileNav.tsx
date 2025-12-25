@@ -29,9 +29,20 @@ const MobileNav = () => {
             className="cursor-pointer"
           />
         </SheetTrigger>
-        <SheetContent side="left" className="border-none bg-black-1">
+        <SheetContent
+          side="left"
+          className="
+            border-none
+            bg-black-1
+            w-screen
+            max-w-full
+            md:w-auto
+            md:max-w-sm
+            overflow-x-hidden
+          "
+        >
           <SheetHeader>
-            <SheetTitle>Menú</SheetTitle>
+            <SheetTitle hidden>Menú</SheetTitle>
           </SheetHeader>
           <Link
             href="/"
