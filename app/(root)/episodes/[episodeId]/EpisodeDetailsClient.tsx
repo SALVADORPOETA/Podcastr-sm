@@ -77,7 +77,7 @@ const EpisodeDetailsClient = ({ episodeId }: { episodeId: Id<'episodes'> }) => {
   }
 
   return (
-    <section className="flex w-full max-w-screen flex-col overflow-x-hidden">
+    <section className="flex w-screen max-w-screen flex-col overflow-x-hidden">
       <header className="mt-9 flex items-center justify-between">
         <h1 className="text-20 font-bold text-white-1">Currently Playing</h1>
         <figure className="flex gap-3 items-center relative">
