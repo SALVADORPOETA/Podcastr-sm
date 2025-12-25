@@ -73,7 +73,7 @@ const EpisodeDetailPlayer = ({
             <p className="text-16 font-normal text-white-2">{podcastTitle}</p>
           </Link>
         </div>
-        <div className="flex items-center gap-6">
+        <div className="flex flex-wrap items-center gap-6">
           <Link
             href={`/profile/${user?.id}`}
             className="flex-center cursor-pointer gap-1 px-4 py-1"
