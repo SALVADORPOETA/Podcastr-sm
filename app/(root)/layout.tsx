@@ -11,7 +11,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <div className="relative flex flex-col w-full">
+    <div className="relative flex flex-col w-full max-w-full">
       <main className="relative flex bg-black-3 mt-6 mb-20 md:my-0">
         <LeftSidebar />
         <section className="flex min-h-screen flex-1 flex-col px-4 sm:px-14">
