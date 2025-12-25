@@ -73,7 +73,7 @@ const EpisodeDetailPlayer = ({
             <p className="text-16 font-normal text-white-2">{podcastTitle}</p>
           </Link>
         </div>
-        <div className="flex flex-wrap items-center gap-6">
+        <div className="flex flex-wrap md:flex-nowrap items-center gap-6">
           <Link
             href={`/profile/${user?.id}`}
             className="flex-center cursor-pointer gap-1 px-4 py-1"
@@ -87,27 +87,29 @@ const EpisodeDetailPlayer = ({
             />
             <h2 className="text-16 font-normal text-white-2 px-1">{author}</h2>
           </Link>
-          {audioUrl && (
-            <a
-              href={audioUrl}
-              download
-              className="text-16 bg-orange-1 font-bold text-white-1 px-4 py-2 rounded-md"
+          <div className="flex flex-row gap-6">
+            {audioUrl && (
+              <a
+                href={audioUrl}
+                download
+                className="text-16 bg-orange-1 font-bold text-white-1 px-4 py-2 rounded-md"
+              >
+                Download
+              </a>
+            )}
+            <Button
+              onClick={handlePlay}
+              className="text-16 w-full max-w-[250px] bg-orange-1 font-extrabold text-white-1"
             >
-              Download
-            </a>
-          )}
-          <Button
-            onClick={handlePlay}
-            className="text-16 w-full max-w-[250px] bg-orange-1 font-extrabold text-white-1"
-          >
-            <Image
-              src="/icons/Play.svg"
-              width={20}
-              height={20}
-              alt="random play"
-            />
-            &nbsp; Play episode
-          </Button>
+              <Image
+                src="/icons/Play.svg"
+                width={20}
+                height={20}
+                alt="random play"
+              />
+              &nbsp; Play episode
+            </Button>
+          </div>
         </div>
       </div>
       <EditEpisodeModal
