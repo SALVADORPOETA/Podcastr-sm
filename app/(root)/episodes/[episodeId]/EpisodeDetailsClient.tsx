@@ -77,10 +77,10 @@ const EpisodeDetailsClient = ({ episodeId }: { episodeId: Id<'episodes'> }) => {
   }
 
   return (
-    <section className="flex w-screen max-w-screen flex-col overflow-x-hidden">
-      <header className="mt-9 flex items-center justify-between">
+    <section className="flex flex-col overflow-x-hidden">
+      <header className="mt-9 flex w-full max-w-full items-center justify-between">
         <h1 className="text-20 font-bold text-white-1">Currently Playing</h1>
-        <figure className="flex gap-3 items-center relative">
+        <figure className="flex max-w-full items-center gap-3 relative">
           <div className="flex gap-3">
             <Image
               src="/icons/headphone.svg"
@@ -105,7 +105,7 @@ const EpisodeDetailsClient = ({ episodeId }: { episodeId: Id<'episodes'> }) => {
                 <div
                   className="
                     absolute top-8 right-0 z-10
-                    flex w-32 max-w-[calc(100vw-16px)]
+                    flex w-32 max-w-full
                     flex-col rounded-md bg-black-6 py-1.5
                     overflow-hidden
                   "
