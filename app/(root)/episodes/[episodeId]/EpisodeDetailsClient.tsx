@@ -179,16 +179,16 @@ const EpisodeDetailsClient = ({ episodeId }: { episodeId: Id<'episodes'> }) => {
       </AlertDialog>
 
       {/* Mueve el Dialog de edición también fuera del menú */}
-      <EditEpisodeModal
-        episodeId={episode._id}
-        initialTitle={episode.episodeTitle}
-        initialDescription={episode.episodeDescription}
-        initialAiPrompt={episode.voicePrompt}
-        initialVoiceType={episode.voiceType as VoiceType}
-        isOpen={isEditModalOpen}
-        onClose={() => setIsEditModalOpen(false)}
-      />
       <div className="w-full max-w-full overflow-x-hidden">
+        <EditEpisodeModal
+          episodeId={episode._id}
+          initialTitle={episode.episodeTitle}
+          initialDescription={episode.episodeDescription}
+          initialAiPrompt={episode.voicePrompt}
+          initialVoiceType={episode.voiceType as VoiceType}
+          isOpen={isEditModalOpen}
+          onClose={() => setIsEditModalOpen(false)}
+        />
         <EpisodeDetailPlayer
           podcastId={podcast._id}
           podcastTitle={podcast.podcastTitle}
@@ -208,16 +208,16 @@ const EpisodeDetailsClient = ({ episodeId }: { episodeId: Id<'episodes'> }) => {
           imageStorageId={podcast.imageStorageId}
           audioStorageId={episode.audioStorageId}
         />
-      </div>
-      <p className="text-white-2 text-16 pb-8 pt-[45px] font-medium max-md:text-center">
-        {episode?.episodeDescription}
-      </p>
-      <div className="flex flex-col gap-8">
-        <div className="flex flex-col gap-4">
-          <h1 className="text-18 font-bold text-white-1">Transcription</h1>
-          <p className="text-16 font-medium text-white-2">
-            {episode?.voicePrompt}
-          </p>
+        <p className="text-white-2 text-16 pb-8 pt-[45px] font-medium max-md:text-center">
+          {episode?.episodeDescription}
+        </p>
+        <div className="flex flex-col gap-8">
+          <div className="flex flex-col gap-4">
+            <h1 className="text-18 font-bold text-white-1">Transcription</h1>
+            <p className="text-16 font-medium text-white-2">
+              {episode?.voicePrompt}
+            </p>
+          </div>
         </div>
       </div>
     </section>
