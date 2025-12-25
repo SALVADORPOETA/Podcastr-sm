@@ -77,7 +77,7 @@ const EpisodeDetailsClient = ({ episodeId }: { episodeId: Id<'episodes'> }) => {
   }
 
   return (
-    <section className="flex w-full flex-col">
+    <section className="flex w-full max-w-full flex-col overflow-x-hidden">
       <header className="mt-9 flex items-center justify-between">
         <h1 className="text-20 font-bold text-white-1">Currently Playing</h1>
         <figure className="flex gap-3 items-center relative">
@@ -91,7 +91,7 @@ const EpisodeDetailsClient = ({ episodeId }: { episodeId: Id<'episodes'> }) => {
             <h2 className="text-16 font-bold text-white-1">{episode?.views}</h2>
           </div>
           {isOwner && (
-            <div className="relative cursor-pointer">
+            <div className="relative cursor-pointer max-w-full">
               <Image
                 src="/icons/three-dots.svg"
                 width={20}
@@ -103,7 +103,12 @@ const EpisodeDetailsClient = ({ episodeId }: { episodeId: Id<'episodes'> }) => {
 
               {isMenuOpen && (
                 <div
-                  className="absolute top-8 right-0 z-10 flex w-32 flex-col rounded-md bg-black-6 py-1.5"
+                  className="
+                    absolute top-8 right-0 z-10
+                    flex w-32 max-w-[calc(100vw-16px)]
+                    flex-col rounded-md bg-black-6 py-1.5
+                    overflow-hidden
+                  "
                   ref={menuRef}
                 >
                   <div
@@ -183,26 +188,27 @@ const EpisodeDetailsClient = ({ episodeId }: { episodeId: Id<'episodes'> }) => {
         isOpen={isEditModalOpen}
         onClose={() => setIsEditModalOpen(false)}
       />
-
-      <EpisodeDetailPlayer
-        podcastId={podcast._id}
-        podcastTitle={podcast.podcastTitle}
-        authorId={podcast.authorId}
-        author={podcast.author}
-        authorImageUrl={podcast.authorImageUrl || ''}
-        podcastDescription={podcast.podcastDescription}
-        imageUrl={podcast.imageUrl || ''}
-        episodeId={episode._id}
-        episodeTitle={episode.episodeTitle}
-        episodeDescription={episode.episodeDescription}
-        voicePrompt={episode.voicePrompt}
-        audioUrl={episode.audioUrl}
-        audioDuration={episode.audioDuration}
-        isOwner={isOwner}
-        voiceType={episode.voiceType as VoiceType}
-        imageStorageId={podcast.imageStorageId}
-        audioStorageId={episode.audioStorageId}
-      />
+      <div className="w-full max-w-full overflow-x-hidden">
+        <EpisodeDetailPlayer
+          podcastId={podcast._id}
+          podcastTitle={podcast.podcastTitle}
+          authorId={podcast.authorId}
+          author={podcast.author}
+          authorImageUrl={podcast.authorImageUrl || ''}
+          podcastDescription={podcast.podcastDescription}
+          imageUrl={podcast.imageUrl || ''}
+          episodeId={episode._id}
+          episodeTitle={episode.episodeTitle}
+          episodeDescription={episode.episodeDescription}
+          voicePrompt={episode.voicePrompt}
+          audioUrl={episode.audioUrl}
+          audioDuration={episode.audioDuration}
+          isOwner={isOwner}
+          voiceType={episode.voiceType as VoiceType}
+          imageStorageId={podcast.imageStorageId}
+          audioStorageId={episode.audioStorageId}
+        />
+      </div>
       <p className="text-white-2 text-16 pb-8 pt-[45px] font-medium max-md:text-center">
         {episode?.episodeDescription}
       </p>
