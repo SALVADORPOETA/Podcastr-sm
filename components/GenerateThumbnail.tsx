@@ -30,7 +30,6 @@ const GenerateThumbnail = ({
   const { startUpload } = useUploadFiles(generateUploadUrl)
 
   const handleImage = async (blob: Blob, fileName: string) => {
-    setIsImageLoading(true)
     setImage('')
 
     try {
@@ -43,22 +42,30 @@ const GenerateThumbnail = ({
 
       const imageUrl = await getImageUrl({ storageId })
       setImage(imageUrl!)
-      setIsImageLoading(false)
+
       toast.success('Thumbnail generated successfully')
     } catch (error) {
       console.log(error)
       toast.error('Error generating thumbnail')
+      throw error
     }
   }
 
   const generateImage = async () => {
+    if (isImageLoading) return // protección extra
+
+    setIsImageLoading(true)
+
     try {
       const response = await handleGenerateThumnail({ prompt: imagePrompt })
       const blob = new Blob([response], { type: 'image/png' })
-      handleImage(blob, `thumbnail-${uuidv4()}`)
+
+      await handleImage(blob, `thumbnail-${uuidv4()}`)
     } catch (error) {
       console.log(error)
       toast.error('Error generating thumbnail')
+    } finally {
+      setIsImageLoading(false)
     }
   }
   const uploadImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -116,7 +123,8 @@ const GenerateThumbnail = ({
           <div className="w-full max-w-[200px]">
             <Button
               type="button"
-              className="text-16 bg-orange-1 py-4 font-bold text-white-1"
+              disabled={isImageLoading}
+              className="text-16 bg-orange-1 py-4 font-bold text-white-1 disabled:opacity-70"
               onClick={generateImage}
             >
               {isImageLoading ? (
