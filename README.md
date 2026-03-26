@@ -12,6 +12,12 @@ Key highlights:
 * Dedicated search, discovery, and **profile pages** for content management
 * Fully responsive, mobile-friendly UI with **TailwindCSS** and advanced **React state management**
 
+## 📖 Pages
+
+### Home Page
+
+This home page features a dynamic and reactive interface that showcases trending podcasts in real-time, leveraging Convex for data management and Next.js for optimized rendering. The layout is built with a grid of interactive cards (PodcastCard) styled using Tailwind CSS, providing seamless navigation to individual podcast details while ensuring a modern, high-performance user experience.
+
 <img width="765" height="603" alt="podcastr" src="https://github.com/user-attachments/assets/71bad544-d666-43cc-8121-2a453b44396e" />
 
 ---
