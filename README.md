@@ -44,7 +44,7 @@ The Profile page serves as a hub for creator identity, displaying personal infor
 
 The Details page provides an immersive experience where users can play episodes, view playback statistics, and explore similar podcasts. It features an authorship management system that allows creators to add new episodes, while transparently showcasing the AI prompts used for audio and image generation, adding rich context to every production.
 
-<img width="759" height="629" alt="podcastr4" src="https://github.com/user-attachments/assets/b9a85609-86db-4e12-85d6-4eb5b435f270" />
+<img width="761" height="627" alt="podcastr4" src="https://github.com/user-attachments/assets/150825ab-418e-4d15-aece-1d9ab75b6cd5" />
 
 ### Episodes Page
 
