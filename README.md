@@ -12,6 +12,8 @@ Key highlights:
 * Dedicated search, discovery, and **profile pages** for content management
 * Fully responsive, mobile-friendly UI with **TailwindCSS** and advanced **React state management**
 
+---
+
 ## 📖 Pages
 
 ### Home Page
