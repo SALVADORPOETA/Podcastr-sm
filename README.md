@@ -22,6 +22,36 @@ This home page features a dynamic and reactive interface that showcases trending
 
 <img width="765" height="603" alt="podcastr" src="https://github.com/user-attachments/assets/71bad544-d666-43cc-8121-2a453b44396e" />
 
+### Discover Page
+
+The Discover section integrates advanced search functionality, allowing users to explore the podcast catalog through real-time filtering. It utilizes Next.js's useSearchParams hook to synchronize results with the URL and leverages React Suspense to manage asynchronous loading states, providing fast navigation and efficient empty-state handling.
+
+<img width="761" height="631" alt="podcastr1" src="https://github.com/user-attachments/assets/ef1fc08c-9ee0-4111-888f-1a27941948b8" />
+
+### Create Podcast Page
+
+The creation module allows for building full podcasts from scratch by combining AI and custom tools. Users can generate lifelike audio from text using various OpenAI voices, create thumbnails via DALL-E, or upload their own assets. The system automatically handles cloud storage uploads, calculates media duration, and validates data to ensure seamless and professional publishing.
+
+<img width="777" height="631" alt="podcastr2" src="https://github.com/user-attachments/assets/828c8b2d-1cd5-4070-900e-384cc2f9b346" />
+
+### Profile Page
+
+The Profile page serves as a hub for creator identity, displaying personal information alongside a collection of their latest work. By integrating real-time Convex queries, the page dynamically adapts its content based on the author, offering smooth loading states and personalized calls to action (CTAs) to encourage new content creation when no records are found.
+
+<img width="779" height="629" alt="podcastr3" src="https://github.com/user-attachments/assets/73aee804-9a51-4c3e-8483-4b9d47e1f213" />
+
+### Podcast Page
+
+The Details page provides an immersive experience where users can play episodes, view playback statistics, and explore similar podcasts. It features an authorship management system that allows creators to add new episodes, while transparently showcasing the AI prompts used for audio and image generation, adding rich context to every production.
+
+<img width="759" height="629" alt="podcastr4" src="https://github.com/user-attachments/assets/b9a85609-86db-4e12-85d6-4eb5b435f270" />
+
+### Episodes Page
+
+The Episode Details view provides full control over individual content, giving users access to the full transcription and a dedicated media player. For authors, it integrates an advanced management system featuring confirmation dialogs and editing modals, ensuring that updates or deletions of episodes and their associated files are handled securely and efficiently.
+
+<img width="779" height="631" alt="podcastr5" src="https://github.com/user-attachments/assets/c000b143-3220-45c5-b984-1fbe3cd142f2" />
+
 ---
 
 ## 🧩 Features
