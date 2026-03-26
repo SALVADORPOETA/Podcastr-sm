@@ -26,7 +26,7 @@ This home page features a dynamic and reactive interface that showcases trending
 
 The Discover section integrates advanced search functionality, allowing users to explore the podcast catalog through real-time filtering. It utilizes Next.js's useSearchParams hook to synchronize results with the URL and leverages React Suspense to manage asynchronous loading states, providing fast navigation and efficient empty-state handling.
 
-<img width="761" height="631" alt="podcastr1" src="https://github.com/user-attachments/assets/ef1fc08c-9ee0-4111-888f-1a27941948b8" />
+<img width="761" height="629" alt="podcastr1" src="https://github.com/user-attachments/assets/d964c187-dbf5-4823-b6ad-8f1fb9492166" />
 
 ### Create Podcast Page
 
