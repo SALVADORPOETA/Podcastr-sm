@@ -50,7 +50,7 @@ The Details page provides an immersive experience where users can play episodes,
 
 The Episode Details view provides full control over individual content, giving users access to the full transcription and a dedicated media player. For authors, it integrates an advanced management system featuring confirmation dialogs and editing modals, ensuring that updates or deletions of episodes and their associated files are handled securely and efficiently.
 
-<img width="779" height="631" alt="podcastr5" src="https://github.com/user-attachments/assets/c000b143-3220-45c5-b984-1fbe3cd142f2" />
+<img width="775" height="629" alt="podcastr5" src="https://github.com/user-attachments/assets/6f5bc568-bdbd-4f6d-834b-8adcc624eedd" />
 
 ---
 
